@@ -2,6 +2,7 @@ import ast
 import copy
 import datetime
 import os
+import json
 
 import dateparser
 import jinja2
@@ -338,7 +339,9 @@ def runTableGeneration():
     branches = ast.literal_eval(branches_var)
     assert len(branches) == len(test_repo_ids)
 
-    omReposData = []
+    omReposData = dict({
+        "e2eData": []
+    })
 
     for gitlabID_iter in range(len(test_repo_ids)):  # e2e p2e opse2e ...
 
@@ -391,7 +394,7 @@ def runTableGeneration():
         # with open('rawDict2.dat','w') as ofile:
         #    ofile.write(str(dictListTestResultsNow))
 
-        omReposData.append(omRepoData)
+        omReposData["e2eData"].append(omRepoData)
 
         heading = (
             gitlabName
@@ -429,8 +432,9 @@ def runTableGeneration():
             dictListTestResultsIntervalBefore,
         )
 
-    with open('omTestData.json','w') as ofile:
-        ofile.write(str(omReposData))
+    json_object = json.dumps(omReposData, indent = 2)
+    with open('omReposData.json','w') as outfile:
+        json.dump(omReposData, outfile)
 
 app = Rocketry()
 
