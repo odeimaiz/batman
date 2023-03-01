@@ -350,40 +350,32 @@ def runTableGeneration():
             print("Processing ", gitlabName, branch_name)
             #
             #
-            dictListTestResultsNow.append(
-                copy.deepcopy(
-                    fetchGitlabCIResults(
-                        branch_name,
-                        gitlabID,
-                        gitlabName,
-                        since,
-                        now,
-                        personalAccessToken,
-                        per_page
-                    )[0]
-                )
+            resultsNow = fetchGitlabCIResults(
+                branch_name,
+                gitlabID,
+                gitlabName,
+                since,
+                now,
+                personalAccessToken,
+                per_page
             )
-            dictListTestResultsIntervalBefore.append(
-                copy.deepcopy(
-                    fetchGitlabCIResults(
-                        branch_name,
-                        gitlabID,
-                        gitlabName,
-                        since - delta,
-                        since,
-                        personalAccessToken,
-                        per_page,
-                    )[0]
-                )
+            resultsIntervalBefore = fetchGitlabCIResults(
+                branch_name,
+                gitlabID,
+                gitlabName,
+                since - delta,
+                since,
+                personalAccessToken,
+                per_page,
             )
+            dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
+            dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
         # DEBUGOUTPUT
         # with open('rawDict.dat','w') as ofile:
         #    ofile.write(str(dictListTestResults))
 
         dictListTestResultsNow = sanitizedDict(dictListTestResultsNow)
-        dictListTestResultsIntervalBefore = sanitizedDict(
-            dictListTestResultsIntervalBefore
-        )
+        dictListTestResultsIntervalBefore = sanitizedDict(dictListTestResultsIntervalBefore)
 
         # DEBUGOUTPUT
         # with open('rawDict2.dat','w') as ofile:
