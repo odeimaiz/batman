@@ -29,6 +29,17 @@ qx.Class.define("batman.TestData", {
       "production_aws_s4llite_parallel",
     ],
 
+    BRANCH_NAMES_ALIAS: {
+      "master": ["master", "osparc-master.speag.com"],
+      "staging": ["staging", "dalco-staging"],
+      "production": ["production", "dalco-production"],
+      "tip-public": ["tip-public", "tip.itis.swiss"],
+      "staging_aws": ["staging_aws", "aws-staging"],
+      "production_aws": ["production_aws", "aws-production"],
+      "production_aws_s4llite_nonstop": ["production_aws_s4llite_nonstop"],
+      "production_aws_s4llite_parallel": ["production_aws_s4llite_parallel"],
+    },
+
     getTestData: function() {
       return new Promise((resolve, reject) => {
         fetch("resource/data/omReposData.json", {

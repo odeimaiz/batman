@@ -66,12 +66,20 @@ qx.Class.define("batman.Panel", {
     __populateTestsData: function(testsData) {
       testsData.forEach((data, idx) => {
         data.testsData.forEach(testData => {
-          const branchIdx = batman.TestData.BRANCH_NAMES.indexOf(testData.branch)
-          const cardSmall = new batman.TestCardSmall(testData);
-          this._add(cardSmall, {
-            row: branchIdx+1,
-            column: idx+1
-          });
+          let branchIdx = -1;
+          for (const [index, [, value]] of Object.entries(Object.entries(batman.TestData.BRANCH_NAMES_ALIAS))) {
+            if (value.includes(testData.branch)) {
+              branchIdx = parseInt(index);
+              continue;
+            }
+          }
+          if (branchIdx > -1) {
+            const cardSmall = new batman.TestCardSmall(testData);
+            this._add(cardSmall, {
+              row: branchIdx+1,
+              column: idx+1
+            });
+          }
         });
       });
     }
