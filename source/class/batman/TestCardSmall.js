@@ -47,15 +47,21 @@ qx.Class.define("batman.TestCardSmall", {
           color: 'red'
         }
       }];
+      let nTests = 50;
       testData.tests.forEach(test => {
+        // filter out parallels
+        if (test.name.includes("parallel_users")) {
+          return;
+        }
         data[0].x.push(test.name);
         data[0].y.push(test.failed);
-      })
+        nTests = test.runs
+      });
       const layout = {
         ...batman.plotly.PlotlyWrapper.getDefaultLayout(),
         yaxis: {
           showgrid: false,
-          range: [0, testData.nTests],
+          range: [0, nTests],
         }
       };
       const plot = new batman.plotly.PlotlyWidget(plotId, data, layout);
