@@ -324,10 +324,6 @@ def runTableGeneration():
     test_repo_names_var = env.str("test_repo_names")
     branches_var = env.str("branches")
 
-    now = datetime.datetime.now()
-    delta = now - dateparser.parse(since_relative, settings={"RELATIVE_BASE": now})
-    since = now - delta
-
     # Sanity Check
     assert len(test_repo_ids_var.split(" ")) == len(
         test_repo_names_var.split(" ")
