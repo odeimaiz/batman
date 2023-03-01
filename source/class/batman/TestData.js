@@ -55,12 +55,12 @@ qx.Class.define("batman.TestData", {
 
     getDummyData: function() {
       const dummyData = [];
-      dummyData.push(this.__e2eData());
-      dummyData.push(this.__p2eData());
+      dummyData.push(this.__e2eDummyData());
+      dummyData.push(this.__p2eDummyData());
       return dummyData;
     },
 
-    __e2eData: function() {
+    __e2eDummyData: function() {
       return {
         name: "e2e-testing",
         link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines",
@@ -254,7 +254,7 @@ qx.Class.define("batman.TestData", {
       }
     },
 
-    __p2eData: function() {
+    __p2eDummyData: function() {
       return {
         name: "e2e-portal-testing",
         link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines",
