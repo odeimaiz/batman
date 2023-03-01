@@ -368,6 +368,10 @@ def runTableGeneration():
                 personalAccessToken,
                 per_page
             )
+            dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
+            testsData = copy.deepcopy(resultsNow[2])
+            omRepoData["testsData"].append(testsData)
+
             resultsIntervalBefore = fetchGitlabCIResults(
                 branch_name,
                 gitlabID,
@@ -377,10 +381,8 @@ def runTableGeneration():
                 personalAccessToken,
                 per_page,
             )
-            dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
             dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
-            testsData = copy.deepcopy(resultsNow[2])
-            omRepoData["testsData"].append(testsData)
+
 
         # DEBUGOUTPUT
         # with open('rawDict.dat','w') as ofile:
@@ -442,11 +444,11 @@ app = Rocketry()
 @app.task("every 60 minutes")
 def do_hourly():
     runTableGeneration()
-    os.system("cp /batmanpanels/default.css /content")
+    # os.system("cp /batmanpanels/default.css /content")
     # Config / env vars:
 
 
 if __name__ == "__main__":
     runTableGeneration()
-    os.system("cp /batmanpanels/default.css /content")
+    # os.system("cp /batmanpanels/default.css /content")
     app.run()
