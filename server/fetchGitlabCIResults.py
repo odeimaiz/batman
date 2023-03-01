@@ -432,9 +432,10 @@ def runTableGeneration():
             dictListTestResultsIntervalBefore,
         )
 
-    json_object = json.dumps(omReposData, indent = 2)
-    with open('omReposData.json','w') as outfile:
+    fileName = "omReposData.json"
+    with open(fileName,'w') as outfile:
         json.dump(omReposData, outfile)
+    print("output file written", fileName)
 
 app = Rocketry()
 
