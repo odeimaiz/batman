@@ -37,7 +37,7 @@ qx.Class.define("batman.TestData", {
         link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines",
         testsData: [{
           testId: "e2e-osparc",
-          branchId: "master",
+          branch: "master",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=master",
           nTests: 24,
           tests: [{
@@ -73,7 +73,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "staging",
+          branch: "staging",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -109,7 +109,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production",
+          branch: "production",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -145,7 +145,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "tip-public",
+          branch: "tip-public",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -154,7 +154,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "staging_aws",
+          branch: "staging_aws",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -178,7 +178,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production_aws",
+          branch: "production_aws",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -199,7 +199,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production_aws_s4llite_nonstop",
+          branch: "production_aws_s4llite_nonstop",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 96,
           tests: [{
@@ -211,7 +211,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production_aws_s4llite_parallel",
+          branch: "production_aws_s4llite_parallel",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 6,
           tests: [{
@@ -231,7 +231,7 @@ qx.Class.define("batman.TestData", {
         link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines",
         testsData: [{
           testId: "p2e-osparc",
-          branchId: "master",
+          branch: "master",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=master",
           nTests: 6,
           tests: [{

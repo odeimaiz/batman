@@ -67,7 +67,7 @@ qx.Class.define("batman.Panel", {
       console.log(testsData);
       testsData.forEach((data, idx) => {
         data.testsData.forEach(testData => {
-          const branchIdx = batman.TestData.BRANCH_NAMES.indexOf(testData.branchId)
+          const branchIdx = batman.TestData.BRANCH_NAMES.indexOf(testData.branch)
           const cardSmall = new batman.TestCardSmall(testData);
           this._add(cardSmall, {
             row: branchIdx+1,

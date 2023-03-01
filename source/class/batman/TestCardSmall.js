@@ -38,7 +38,7 @@ qx.Class.define("batman.TestCardSmall", {
       // yes data
       this.setBackgroundColor(qx.theme.manager.Color.getInstance().resolve("background"));
 
-      const plotId = testData.testId + "-" + testData.branchId;
+      const plotId = testData.testId + "-" + testData.branch;
       const data = [{
         x: [],
         y: [],
