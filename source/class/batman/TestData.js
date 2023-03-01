@@ -17,11 +17,11 @@ qx.Class.define("batman.TestData", {
       "master",
       "staging",
       "production",
-      "ti-planning",
-      "staging-aws",
-      "production-aws",
-      "production-aws-s4l-nonstop",
-      "production-aws-s4l-parallel",
+      "tip-public",
+      "staging_aws",
+      "production_aws",
+      "production_aws_s4llite_nonstop",
+      "production_aws_s4llite_parallel",
     ],
 
     getDummyData: function() {
@@ -145,7 +145,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "ti-planning",
+          branchId: "tip-public",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -154,7 +154,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "staging-aws",
+          branchId: "staging_aws",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -178,7 +178,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production-aws",
+          branchId: "production_aws",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 24,
           tests: [{
@@ -199,7 +199,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production-aws-s4l-nonstop",
+          branchId: "production_aws_s4llite_nonstop",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 96,
           tests: [{
@@ -211,7 +211,7 @@ qx.Class.define("batman.TestData", {
           }]
         }, {
           testId: "e2e-osparc",
-          branchId: "production-aws-s4l-parallel",
+          branchId: "production_aws_s4llite_parallel",
           link: "https://git.speag.com/oSparc/e2e-testing/-/pipelines?page=1&scope=all&ref=staging",
           nTests: 6,
           tests: [{
