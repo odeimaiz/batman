@@ -176,7 +176,7 @@ def fetchGitlabCIResults(
             + str(aggregatedPipelineResults[testName]["numTotalRuns"])
         )
 
-    return currentRunDict, aggregatedPipelineResults
+    return currentRunDict, aggregatedPipelineResults, testsData
 
 
 # Sanitize dict
@@ -344,10 +344,11 @@ def runTableGeneration():
         gitlabName = test_repo_names[gitlabID_iter]
         dictListTestResultsNow = []
         dictListTestResultsIntervalBefore = []
+        omResultsIntervalBefore = []
         # For every branch (i.e. deployment)
 
         for branch_name in branches[gitlabID_iter]:
-            print("Processing ", gitlabName, branch_name)
+            print("Fetch ", gitlabName, branch_name)
             #
             #
             resultsNow = fetchGitlabCIResults(
@@ -370,6 +371,9 @@ def runTableGeneration():
             )
             dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
             dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
+            testsData = copy.deepcopy(resultsIntervalBefore[2])
+            testsData["testId"] = gitlabID_iter
+            omResultsIntervalBefore.append(testsData)
         # DEBUGOUTPUT
         # with open('rawDict.dat','w') as ofile:
         #    ofile.write(str(dictListTestResults))
