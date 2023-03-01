@@ -9,6 +9,11 @@
 
 ************************************************************************ */
 
+/**
+ * @asset(data/omReposData.json)
+ * @ignore(fetch)
+ */
+
 qx.Class.define("batman.TestData", {
   type: "static",
 
@@ -23,6 +28,19 @@ qx.Class.define("batman.TestData", {
       "production_aws_s4llite_nonstop",
       "production_aws_s4llite_parallel",
     ],
+
+    getTestData: function() {
+      return new Promise((resolve, reject) => {
+        fetch("resource/data/omReposData.json", {
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+          .then(response => response.json())
+          .then(json => resolve(json))
+          .catch(err => reject(err));
+      });
+    },
 
     getDummyData: function() {
       const dummyData = [];

@@ -45,8 +45,14 @@ qx.Class.define("batman.Application", {
       const plotyWrapper = batman.plotly.PlotlyWrapper.getInstance();
       plotyWrapper.addListener("changeLibReady", e => {
         if (e.getData()) {
-          const dummyData = batman.TestData.getDummyData();
-          panel.setTestsData(dummyData);
+          // const dummyData = batman.TestData.getDummyData();
+          // panel.setTestsData(dummyData);
+          batman.TestData.getTestData()
+            .then(testData => {
+              if (testData) {
+                panel.setTestsData(testData["e2eData"]);
+              }
+            });
         }
       });
       plotyWrapper.init();
