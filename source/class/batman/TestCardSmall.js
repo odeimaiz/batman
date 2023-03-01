@@ -39,15 +39,22 @@ qx.Class.define("batman.TestCardSmall", {
       this.setBackgroundColor(qx.theme.manager.Color.getInstance().resolve("background"));
 
       const plotId = testData.testId + "-" + testData.branch;
-      const data = [{
+      const traceSuccess = {
         x: [],
         y: [],
-        type: 'bar',
+        type: "bar",
         marker: {
-          color: []
+          color: "green"
         }
-      }];
-      let nTests = 50;
+      };
+      const traceFailure = {
+        x: [],
+        y: [],
+        type: "bar",
+        marker: {
+          color: "red"
+        }
+      };
       testData.tests.forEach(test => {
         // filter out parallels
         if (test.name.includes("[") && test.name.includes("]")) {
@@ -56,23 +63,20 @@ qx.Class.define("batman.TestCardSmall", {
         if (!("runs" in test) || test.runs === 0) {
           return;
         }
-        data[0].x.push(test.name);
-        if (test.failed === 0) {
-          data[0].y.push(-1);
-          data[0].marker.color.push('green');
-        } else {
-          data[0].y.push(test.failed);
-          data[0].marker.color.push('red');
-        }
-        nTests = test.runs
+        traceSuccess.x.push(test.name);
+        traceSuccess.y.push(test.runs-test.failed);
+        traceFailure.x.push(test.name);
+        traceFailure.y.push(test.failed);
       });
       const layout = {
         ...batman.plotly.PlotlyWrapper.getDefaultLayout(),
+        barmode: "stack",
         yaxis: {
           showgrid: false,
-          range: [-1, nTests],
-        }
+        },
+        showlegend: false
       };
+      const data = [traceFailure, traceSuccess];
       const plot = new batman.plotly.PlotlyWidget(plotId, data, layout);
       this._add(plot, {
         top: 0,

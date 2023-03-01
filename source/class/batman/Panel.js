@@ -64,7 +64,6 @@ qx.Class.define("batman.Panel", {
     },
 
     __populateTestsData: function(testsData) {
-      console.log(testsData);
       testsData.forEach((data, idx) => {
         data.testsData.forEach(testData => {
           const branchIdx = batman.TestData.BRANCH_NAMES.indexOf(testData.branch)
