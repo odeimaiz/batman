@@ -339,6 +339,10 @@ def runTableGeneration():
     branches = ast.literal_eval(branches_var)
     assert len(branches) == len(test_repo_ids)
 
+    now = datetime.datetime.now()
+    delta = now - dateparser.parse(since_relative, settings={"RELATIVE_BASE": now})
+    since = now - delta
+
     omReposData = dict({
         "e2eData": []
     })
