@@ -117,8 +117,8 @@ def fetchGitlabCIResults(
                 + str(per_page)
             )
             r = session.get(url, headers=hed)
+    """"
     # Do some aggregation for parallel tests, so they are displayed only as "parallel"
-
     # FIXME: Remove all assumptions about the e2e tests from this code, either perform custom renaming somewhere else or maybe even rename the tests.
     # Maybe some common naming convention is necessary?
     if (
@@ -136,6 +136,7 @@ def fetchGitlabCIResults(
                 dictKeysToPop.append(testName)
         for key in dictKeysToPop:
             aggregatedPipelineResults.pop(key)
+    """
 
     # Calculate number of failed runs etc.
     currentRunDict = {"branch": branch_name}
@@ -371,7 +372,7 @@ def runTableGeneration():
             dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
             testsData = copy.deepcopy(resultsNow[2])
             omRepoData["testsData"].append(testsData)
-
+            """"
             resultsIntervalBefore = fetchGitlabCIResults(
                 branch_name,
                 gitlabID,
@@ -382,6 +383,7 @@ def runTableGeneration():
                 per_page,
             )
             dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
+            """
 
 
         # DEBUGOUTPUT
@@ -396,7 +398,7 @@ def runTableGeneration():
         #    ofile.write(str(dictListTestResultsNow))
 
         omReposData["e2eData"].append(omRepoData)
-
+        """"
         heading = (
             gitlabName
             + " - "
@@ -432,6 +434,7 @@ def runTableGeneration():
             test_repo_names,
             dictListTestResultsIntervalBefore,
         )
+        """
 
     fileName = "omReposData.json"
     with open(fileName,'w') as outfile:
