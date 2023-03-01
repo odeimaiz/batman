@@ -165,7 +165,7 @@ def fetchGitlabCIResults(
                 ],
             }
         )
-        testsData["tests"].append(dict({
+        testsData["tests"].insert(0, dict({
             "name": testName,
             "failed": aggregatedPipelineResults[testName]["numFailedRuns"],
             "runs": aggregatedPipelineResults[testName]["numTotalRuns"],
@@ -379,7 +379,7 @@ def runTableGeneration():
             )
             dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
             dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
-            testsData = copy.deepcopy(resultsIntervalBefore[2])
+            testsData = copy.deepcopy(resultsNow[2])
             omRepoData["testsData"].append(testsData)
 
         # DEBUGOUTPUT
