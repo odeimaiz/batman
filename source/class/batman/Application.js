@@ -32,7 +32,7 @@ qx.Class.define("batman.Application", {
       }
 
       const doc = this.getRoot();
-      doc.setFont("text-14");
+      doc.setFont("text-16");
 
       const panel = new batman.Panel();
       doc.add(panel, {
