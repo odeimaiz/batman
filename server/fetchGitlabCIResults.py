@@ -11,7 +11,13 @@ from rocketry import Rocketry
 
 
 def fetchGitlabCIResults(
-    branch_name, gitlabID, since, before, personalAccessToken, per_page
+    branch_name,
+    gitlabID,
+    gitlabName,
+    since,
+    before,
+    personalAccessToken,
+    per_page
 ):
     print(before)
     # Get all pipline runs between specified dates
@@ -133,6 +139,13 @@ def fetchGitlabCIResults(
     # Calculate number of failed runs etc.
     currentRunDict = {"branch": branch_name}
     # print(aggregatedPipelineResults)
+    testsData = {
+        "testId": gitlabName,
+        "branch": branch_name,
+        "link": "https://git.speag.com/oSparc/" + gitlabName + "/-/pipelines?page=1&scope=all&ref=" + branch_name,
+        "nTests": 20,
+        "tests": []
+    }
     for testName in aggregatedPipelineResults.keys():
         aggregatedPipelineResults[testName] = copy.deepcopy(
             {
@@ -152,6 +165,11 @@ def fetchGitlabCIResults(
                 ],
             }
         )
+        testsData["tests"].append(dict({
+            "name": testName,
+            "failed": aggregatedPipelineResults[testName]["numFailedRuns"],
+            "runs": aggregatedPipelineResults[testName]["numTotalRuns"],
+        }))
         currentRunDict[testName] = (
             str(aggregatedPipelineResults[testName]["numFailedRuns"])
             + " / "
@@ -335,7 +353,13 @@ def runTableGeneration():
             dictListTestResultsNow.append(
                 copy.deepcopy(
                     fetchGitlabCIResults(
-                        branch_name, gitlabID, since, now, personalAccessToken, per_page
+                        branch_name,
+                        gitlabID,
+                        gitlabName,
+                        since,
+                        now,
+                        personalAccessToken,
+                        per_page
                     )[0]
                 )
             )
@@ -344,6 +368,7 @@ def runTableGeneration():
                     fetchGitlabCIResults(
                         branch_name,
                         gitlabID,
+                        gitlabName,
                         since - delta,
                         since,
                         personalAccessToken,
