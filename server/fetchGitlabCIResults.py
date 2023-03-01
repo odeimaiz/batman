@@ -338,13 +338,19 @@ def runTableGeneration():
     branches = ast.literal_eval(branches_var)
     assert len(branches) == len(test_repo_ids)
 
+    omReposData = []
+
     for gitlabID_iter in range(len(test_repo_ids)):  # e2e p2e opse2e ...
 
         gitlabID = test_repo_ids[gitlabID_iter]
         gitlabName = test_repo_names[gitlabID_iter]
         dictListTestResultsNow = []
         dictListTestResultsIntervalBefore = []
-        omResultsIntervalBefore = []
+        omRepoData = dict({
+            "name": gitlabName,
+            "link": "https://git.speag.com/oSparc/" + gitlabName + "/-/pipelines",
+            "testsData": []
+        })
         # For every branch (i.e. deployment)
 
         for branch_name in branches[gitlabID_iter]:
@@ -372,8 +378,8 @@ def runTableGeneration():
             dictListTestResultsNow.append(copy.deepcopy(resultsNow[0]))
             dictListTestResultsIntervalBefore.append(copy.deepcopy(resultsIntervalBefore[0]))
             testsData = copy.deepcopy(resultsIntervalBefore[2])
-            testsData["testId"] = gitlabID_iter
-            omResultsIntervalBefore.append(testsData)
+            omRepoData["testsData"].append(testsData)
+
         # DEBUGOUTPUT
         # with open('rawDict.dat','w') as ofile:
         #    ofile.write(str(dictListTestResults))
@@ -384,6 +390,8 @@ def runTableGeneration():
         # DEBUGOUTPUT
         # with open('rawDict2.dat','w') as ofile:
         #    ofile.write(str(dictListTestResultsNow))
+
+        omReposData.append(omRepoData)
 
         heading = (
             gitlabName
@@ -421,6 +429,8 @@ def runTableGeneration():
             dictListTestResultsIntervalBefore,
         )
 
+    with open('omTestData.json','w') as ofile:
+        ofile.write(str(omReposData))
 
 app = Rocketry()
 
