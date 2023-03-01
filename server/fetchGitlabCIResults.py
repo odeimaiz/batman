@@ -144,7 +144,6 @@ def fetchGitlabCIResults(
         "testId": gitlabName,
         "branch": branch_name,
         "link": "https://git.speag.com/oSparc/" + gitlabName + "/-/pipelines?page=1&scope=all&ref=" + branch_name,
-        "nTests": 20,
         "tests": []
     }
     for testName in aggregatedPipelineResults.keys():
