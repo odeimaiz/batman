@@ -436,7 +436,7 @@ def runTableGeneration():
         )
         """
 
-    fileName = "omReposData.json"
+    fileName = "omReposData_" + str(nHours) + "h.json";
     with open(fileName,'w') as outfile:
         json.dump(omReposData, outfile)
     print("output file written", fileName)
@@ -446,12 +446,14 @@ app = Rocketry()
 
 @app.task("every 60 minutes")
 def do_hourly():
-    runTableGeneration()
+    runTableGeneration(8)
+    runTableGeneration(24)
     # os.system("cp /batmanpanels/default.css /content")
     # Config / env vars:
 
 
 if __name__ == "__main__":
-    runTableGeneration()
+    runTableGeneration(8)
+    runTableGeneration(24)
     # os.system("cp /batmanpanels/default.css /content")
     app.run()
