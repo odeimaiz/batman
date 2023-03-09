@@ -12,7 +12,7 @@
 qx.Class.define("batman.TestCardSmall", {
   extend: qx.ui.core.Widget,
 
-  construct: function(testData) {
+  construct: function(cardId, testData) {
     this.base(arguments);
 
     this._setLayout(new qx.ui.layout.Canvas());
@@ -20,12 +20,21 @@ qx.Class.define("batman.TestCardSmall", {
     // no data
     this.setBackgroundColor("gray");
 
+    if (cardId) {
+      this.setCardId(cardId);
+    }
+
     if (testData) {
       this.setTestData(testData);
     }
   },
 
   properties: {
+    cardId: {
+      check: "String",
+      nullable: true
+    },
+
     testData: {
       check: "Object",
       nullable: true,
@@ -38,7 +47,7 @@ qx.Class.define("batman.TestCardSmall", {
       // yes data
       this.setBackgroundColor(qx.theme.manager.Color.getInstance().resolve("background"));
 
-      const plotId = testData.testId + "-" + testData.branch;
+      const plotId = this.getCardId();
       const traceSuccess = {
         x: [],
         y: [],

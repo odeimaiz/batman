@@ -12,14 +12,23 @@
 qx.Class.define("batman.Panel", {
   extend: qx.ui.core.Widget,
 
-  construct: function() {
+  construct: function(panelId) {
     this.base(arguments);
+
+    if (panelId) {
+      this.setPanelId(panelId);
+    }
 
     const layout = new qx.ui.layout.Grid(10, 10);
     this._setLayout(layout);
   },
 
   properties: {
+    panelId: {
+      check: "String",
+      nullable: true
+    },
+
     testsData: {
       check: "Object",
       nullable: true,
@@ -74,7 +83,8 @@ qx.Class.define("batman.Panel", {
             }
           }
           if (branchIdx > -1) {
-            const cardSmall = new batman.TestCardSmall(testData);
+            const cardId = this.getPanelId() + "_" + testData.testId + "-" + testData.branch;
+            const cardSmall = new batman.TestCardSmall(cardId, testData);
             this._add(cardSmall, {
               row: branchIdx+1,
               column: idx+1

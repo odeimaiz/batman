@@ -34,28 +34,57 @@ qx.Class.define("batman.Application", {
       const doc = this.getRoot();
       doc.setFont("text-16");
 
-      const panel = new batman.Panel();
-      doc.add(panel, {
+      const tabView = new qx.ui.tabview.TabView().set({
+        contentPadding: 10
+      });
+
+      doc.add(tabView, {
         top: 10,
         right: 10,
         bottom: 10,
         left: 10,
       });
 
+      const tabPage8h = this.__createTabPage("8h");
+      const panel8h = new batman.Panel("8h");
+      tabPage8h.add(panel8h, {
+        flex: 1
+      });
+      tabView.add(tabPage8h);
+
+      const tabPage24h = this.__createTabPage("24h");
+      const panel24h = new batman.Panel("24h");
+      tabPage24h.add(panel24h, {
+        flex: 1
+      });
+      tabView.add(tabPage24h);
+
       const plotyWrapper = batman.plotly.PlotlyWrapper.getInstance();
       plotyWrapper.addListener("changeLibReady", e => {
         if (e.getData()) {
-          // const dummyData = batman.TestData.getDummyData();
-          // panel.setTestsData(dummyData);
           batman.TestData.getTestData()
             .then(testData => {
               if (testData) {
-                panel.setTestsData(testData["e2eData"]);
+                panel8h.setTestsData(testData["e2eData"]);
+                panel24h.setTestsData(testData["e2eData"]);
               }
             });
         }
       });
       plotyWrapper.init();
+    },
+
+    __createTabPage: function(title) {
+      const tabPage = new qx.ui.tabview.Page(title).set({
+        layout: new qx.ui.layout.VBox(0),
+      });
+      const tabButton = tabPage.getChildControl("button");
+      tabButton.set({
+        font: "text-16",
+        allowGrowX: true,
+        alignX: "center"
+      });
+      return tabPage;
     }
   }
 });
