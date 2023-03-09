@@ -1,13 +1,10 @@
-import ast
 import copy
 import datetime
-import os
 import json
 
 import dateparser
-import jinja2
 import requests
-from environs import Env
+# from environs import Env
 from rocketry import Rocketry
 
 
@@ -198,141 +195,34 @@ def sanitizedDict(inputDict):
     return dictList
 
 
-def writeJ2HTMLTable(
-    j2templateFilepath,
-    j2templateName,
-    heading,
-    timeObj,
-    gitlabName,
-    test_repo_names,
-    dictListTestResultsNow,
-    dictListTestResultsIntervalBefore=None,
-):
-    def composeFilename(datetime, branch):
-        return f"{datetime:%Y%m%d}" + "_" + branch + ".html"
-
-    loader = jinja2.FileSystemLoader(j2templateFilepath)
-    j2env = jinja2.Environment(loader=loader)
-    template = j2env.get_template(j2templateName)
-    j2heading = heading
-
-    def addLinkToEntry(gitlabName, branchName, entry):
-        return (
-            "<a href='https://git.speag.com/oSparc/"
-            + gitlabName
-            + "/-/pipelines?page=1&scope=all&ref="
-            + branchName
-            + "'>"
-            + entry
-            + "</a>"
-        )
-
-    j2heading2 = sorted(
-        [
-            str("<a href='" + composeFilename(timeObj, x) + "'>" + x + "</a>")
-            for x in test_repo_names
-            if x != gitlabName
-        ]
-        + [str(x) for x in test_repo_names if x == gitlabName]
-    )
-    if dictListTestResultsIntervalBefore != None:
-        j2ListRows = [
-            [dictListTestResultsNow[i]["branch"]]
-            + [
-                dictListTestResultsNow[i][key]
-                + " "
-                + getArrowEmoji(
-                    dictListTestResultsNow, dictListTestResultsIntervalBefore, i, key
-                )
-                for key in dictListTestResultsNow[i].keys()
-                if key != "branch"
-            ]
-            for i in range(len(dictListTestResultsNow))
-        ]
-    else:
-        j2ListRows = [
-            [dictListTestResultsNow[i]["branch"]]
-            + [
-                dictListTestResultsNow[i][key] + " "
-                for key in dictListTestResultsNow[i].keys()
-                if key != "branch"
-            ]
-            for i in range(len(dictListTestResultsNow))
-        ]
-    for row in j2ListRows:
-        for entryIter in range(len(row)):
-            entry = row[entryIter]
-            if entryIter == 0:
-                row[entryIter] = (
-                    "<td>"
-                    + addLinkToEntry(gitlabName, row[0], row[entryIter])
-                    + "</td>"
-                )
-                continue
-            if "---" in entry:
-                row[entryIter] = "<td>" + row[entryIter] + "</td>"
-                continue
-            #
-            entry = row[entryIter]
-
-            if float(entry.split("/")[1][:-1]) == float(0):
-                row[entryIter] = "<td>" + row[entryIter] + "</td>"
-                continue
-            percentageFailed = float(entry.split("/")[0]) / float(
-                entry.split("/")[1][:-1]
-            )
-            # print(percentageFailed)
-            if percentageFailed > 0.5:
-                row[entryIter] = "<td class='red'>" + row[entryIter] + "</td>"
-            elif percentageFailed > 0.05:
-                row[entryIter] = "<td class='yellow'>" + row[entryIter] + "</td>"
-            else:
-                row[entryIter] = "<td class='green'>" + row[entryIter] + "</td>"
-
-    j2table_headeritems = ["deployment"] + [
-        i for i in dictListTestResultsNow[0].keys() if i != "branch"
+def runTableGeneration(nHours):
+    # env = Env()
+    # env.read_env(".env", recurse=False)
+    # per_page = env.str("per_page")
+    # personalAccessToken = env.str("personal_access_token")
+    # since_relative = env.str("since_relative")
+    personalAccessToken = 'bv1tgdd1JB2dzuTobKx-'
+    per_page = 100
+    since_relative = str(nHours) + " hours ago"
+    branches = [
+        ['master', 'staging', 'production', 'staging_aws', 'production_aws', 'tip-public', 'production_aws_s4llite_nonstop', 'production_aws_s4llite_parallel'],
+        ['master', 'staging', 'production', 'staging_aws', 'production_aws'],
+        ['master', 'dalco-staging', 'dalco-production', 'aws-staging', 'aws-production', 'tip.itis.swiss'],
+        ['master'],
     ]
-    # FIXME: Remove this hardcoded renaming / sanitation for cleaner code, maybe rename the e2e tests themlseves
-    j2table_headeritems = [
-        i
-        if "$" not in i and "_TEST_FILE".lower() not in i
-        else i.split("_TEST_FILE".lower())[0].split("$")[1]
-        for i in j2table_headeritems
+    test_repo_ids = [
+        "300",
+        "316",
+        "525",
+        "97"
     ]
-    # via https://stackoverflow.com/questions/9198334/how-to-build-up-a-html-table-with-a-simple-for-loop-in-jinja2
-    content = template.render(
-        table_headeritems=j2table_headeritems,
-        table_rows=j2ListRows,
-        j2heading=j2heading,
-        j2heading2=j2heading2,
-    )
-    with open(
-        "/content/" + composeFilename(timeObj, gitlabName), mode="w", encoding="utf-8"
-    ) as message:
-        message.write(content)
+    test_repo_names = [
+        "e2e-testing",
+        "e2e-portal-testing",
+        "e2e-ops",
+        "osparc-metrics",
+    ]
 
-
-def runTableGeneration():
-    env = Env()
-    env.read_env(".env", recurse=False)
-    per_page = env.str("per_page")
-    personalAccessToken = env.str("personal_access_token")
-    since_relative = env.str("since_relative")
-    configFilepath = env.str("config_filepath")
-    j2templateFilename = env.str("j2templateFilename")
-    test_repo_ids_var = env.str("test_repo_ids")
-    test_repo_names_var = env.str("test_repo_names")
-    branches_var = env.str("branches")
-
-    # Sanity Check
-    assert len(test_repo_ids_var.split(" ")) == len(
-        test_repo_names_var.split(" ")
-    )
-
-    # For every test repo (e2e,p2e...)
-    test_repo_ids = test_repo_ids_var.split(" ")
-    test_repo_names = test_repo_names_var.split(" ")
-    branches = ast.literal_eval(branches_var)
     assert len(branches) == len(test_repo_ids)
 
     now = datetime.datetime.now()
@@ -391,50 +281,13 @@ def runTableGeneration():
         #    ofile.write(str(dictListTestResults))
 
         dictListTestResultsNow = sanitizedDict(dictListTestResultsNow)
-        dictListTestResultsIntervalBefore = sanitizedDict(dictListTestResultsIntervalBefore)
+        # dictListTestResultsIntervalBefore = sanitizedDict(dictListTestResultsIntervalBefore)
 
         # DEBUGOUTPUT
         # with open('rawDict2.dat','w') as ofile:
         #    ofile.write(str(dictListTestResultsNow))
 
         omReposData["e2eData"].append(omRepoData)
-        """"
-        heading = (
-            gitlabName
-            + " - "
-            + now.strftime("%A")
-            + ", "
-            + f"{now:%Y-%m-%dT%H:%M}"
-            + " -       failures/total"
-        )
-        writeJ2HTMLTable(
-            configFilepath,
-            j2templateFilename,
-            heading,
-            now,
-            gitlabName,
-            test_repo_names,
-            dictListTestResultsNow,
-            dictListTestResultsIntervalBefore,
-        )
-        heading = (
-            gitlabName
-            + " - "
-            + since.strftime("%A")
-            + ", "
-            + f"{since:%Y-%m-%dT%H:%M}"
-            + " -       failures/total"
-        )
-        writeJ2HTMLTable(
-            configFilepath,
-            j2templateFilename,
-            heading,
-            since,
-            gitlabName,
-            test_repo_names,
-            dictListTestResultsIntervalBefore,
-        )
-        """
 
     fileName = "omReposData_" + str(nHours) + "h.json";
     with open(fileName,'w') as outfile:
@@ -448,12 +301,9 @@ app = Rocketry()
 def do_hourly():
     runTableGeneration(8)
     runTableGeneration(24)
-    # os.system("cp /batmanpanels/default.css /content")
-    # Config / env vars:
 
 
 if __name__ == "__main__":
     runTableGeneration(8)
     runTableGeneration(24)
-    # os.system("cp /batmanpanels/default.css /content")
     app.run()
