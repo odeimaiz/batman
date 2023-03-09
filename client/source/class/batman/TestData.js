@@ -10,7 +10,7 @@
 ************************************************************************ */
 
 /**
- * @asset(data/omReposData.json)
+ * @asset(data/*)
  * @ignore(fetch)
  */
 
@@ -40,9 +40,9 @@ qx.Class.define("batman.TestData", {
       "production_aws_s4llite_parallel": ["production_aws_s4llite_parallel"],
     },
 
-    getTestData: function() {
+    getTestData: function(nHours) {
       return new Promise((resolve, reject) => {
-        fetch("resource/data/omReposData.json", {
+        fetch("resource/data/omReposData_" + nHours + "h.json", {
           headers: {
             'Accept': 'application/json'
           }

@@ -62,10 +62,15 @@ qx.Class.define("batman.Application", {
       const plotyWrapper = batman.plotly.PlotlyWrapper.getInstance();
       plotyWrapper.addListener("changeLibReady", e => {
         if (e.getData()) {
-          batman.TestData.getTestData()
+          batman.TestData.getTestData(8)
             .then(testData => {
               if (testData) {
                 panel8h.setTestsData(testData["e2eData"]);
+              }
+            });
+          batman.TestData.getTestData(24)
+            .then(testData => {
+              if (testData) {
                 panel24h.setTestsData(testData["e2eData"]);
               }
             });
