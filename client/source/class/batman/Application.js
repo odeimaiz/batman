@@ -80,9 +80,7 @@ qx.Class.define("batman.Application", {
       });
       const tabButton = tabPage.getChildControl("button");
       tabButton.set({
-        font: "text-16",
-        allowGrowX: true,
-        alignX: "center"
+        textColor: "text"
       });
       return tabPage;
     }
